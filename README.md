@@ -12,6 +12,7 @@ Esta es una aplicación web que predice la calidad de un vino tinto (con una pun
 App-web-de-ML-usando-Streamlit/
 └── models/
     └── knn_wine_quality.pkl # Modelo KNN entrenado
+├── .python-version
 ├── Procfile # Configuración para Render
 ├── README.md
 ├── app.py # Aplicación Streamlit
