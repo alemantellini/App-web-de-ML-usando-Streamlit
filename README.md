@@ -13,6 +13,7 @@ App-web-de-ML-usando-Streamlit/
 └── models/
     └── knn_wine_quality.pkl # Modelo KNN entrenado
 ├── .gitattributes
+├── .python-version
 ├── app.py # Aplicación Streamlit
 ├── Procfile # Configuración para Render
 ├── README.md
