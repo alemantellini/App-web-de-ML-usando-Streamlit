@@ -2,7 +2,7 @@
 
 Esta es una aplicación web que predice la calidad de un vino tinto (con una puntuación del 1 al 10) usando un modelo de Machine Learning (KNN) entrenado con el dataset **Red Wine Quality**.
 
-🔗 **Demo en vivo**: [enlace-a-render-aqui]
+🔗 **Demo en vivo**: https://app-web-de-ml-usando-streamlit-1.onrender.com/
 
 ---
 
