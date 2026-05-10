@@ -1,5 +1,5 @@
 import streamlit as st
-import pickle
+import joblib
 import numpy as np
 import pandas as pd
 import os
@@ -90,7 +90,7 @@ html, body, [class*="css"] {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: 1.05rem;
-    color: #8a7060;
+    color: #A8958C;
     max-width: 420px;
     margin: 0 auto;
     line-height: 1.7;
@@ -119,7 +119,7 @@ html, body, [class*="css"] {
 /* Streamlit widgets */
 div[data-testid="stNumberInput"] label,
 div[data-testid="stSlider"] label {
-    color: #8a7060 !important;
+    color: #A8958C !important;
     font-family: 'Josefin Sans', sans-serif !important;
     font-size: 10px !important;
     font-weight: 600 !important;
@@ -131,7 +131,7 @@ div[data-testid="stNumberInput"] input {
     background: rgba(245, 237, 224, 0.04) !important;
     border: 1px solid rgba(180, 124, 60, 0.2) !important;
     border-radius: 8px !important;
-    color: #f5ede0 !important;
+    color: #000 !important;
     font-family: 'Cormorant Garamond', serif !important;
     font-size: 1.1rem !important;
 }
@@ -204,7 +204,7 @@ div[data-testid="stButton"] > button:hover {
 
 .result-out-of {
     font-family: 'Josefin Sans', sans-serif;
-    font-size: 10px;
+    font-size: 16px;
     letter-spacing: 0.2em;
     color: #6a5a4a;
     margin-bottom: 16px;
@@ -223,12 +223,13 @@ div[data-testid="stButton"] > button:hover {
     font-size: 1.2rem;
     letter-spacing: 4px;
     margin-bottom: 20px;
+    color: #A8958C;
 }
 .result-desc {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: 0.95rem;
-    color: #6a5a4a;
+    color: #A8958C;
     line-height: 1.7;
     max-width: 360px;
     margin: 0 auto 20px;
@@ -237,7 +238,7 @@ div[data-testid="stButton"] > button:hover {
     font-family: 'Josefin Sans', sans-serif;
     font-size: 9px;
     letter-spacing: 0.1em;
-    color: #4a3a30;
+    color: #A8958C;
     line-height: 1.8;
     border-top: 1px solid rgba(180, 124, 60, 0.1);
     padding-top: 16px;
@@ -252,20 +253,27 @@ div[data-testid="stButton"] > button:hover {
     font-size: 9px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #3a2a22;
+    color: #A8958C;
 }
 .footer a { color: #b47c3c; text-decoration: none; }
 </style>
 """, unsafe_allow_html=True)
 
-# Cargar el modelo
+# Cargar el modelo Y el escalador
 @st.cache_resource
-def load_model():
-    model_path = os.path.join(os.path.dirname(__file__), 'models', 'knn_wine.pkl')
-    with open(model_path, 'rb') as f:
-        return pickle.load(f)
-model = load_model()
+def load_assets():
+    # Ruta a la carpeta de modelos
+    base_path = os.path.join(os.path.dirname(__file__), 'models')
+    
+    # Cargamos el modelo
+    model = joblib.load(os.path.join(base_path, 'knn_wine.pkl'))
+    
+    # Cargamos el escalador (¡Esto es vital para KNN!)
+    scaler = joblib.load(os.path.join(base_path, 'scaler_wine.pkl'))
+    
+    return model, scaler
 
+model, scaler = load_assets()
 # Hero
 st.markdown("""
 <div class="hero">
@@ -316,7 +324,9 @@ if st.button("🍷 Analizar el vino"):
                            chlorides, free_sulfur_dioxide, total_sulfur_dioxide,
                            density, pH, sulphates, alcohol]])
 
-    score = int(model.predict(features)[0])
+    features_scaled = scaler.transform(features)
+
+    score = int(model.predict(features_scaled)[0])
 
     # Etiqueta y estilo según la puntuación
     if score >= 7:
