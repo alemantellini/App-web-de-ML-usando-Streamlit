@@ -9,13 +9,14 @@ Esta es una aplicación web que predice la calidad de un vino tinto (con una pun
 ## 📁 Estructura del proyecto
 
 ```
-wine-streamlit/
-├── app.py # Aplicación Streamlit
-├── Procfile # Configuración para Render
-├── requirements.txt # Dependencias Python
-├── README.md
+App-web-de-ML-usando-Streamlit/
 └── models/
     └── knn_wine_quality.pkl # Modelo KNN entrenado
+├── .gitattributes
+├── app.py # Aplicación Streamlit
+├── Procfile # Configuración para Render
+├── README.md
+├── requirements.txt # Dependencias Python
 ```
 
 ---
